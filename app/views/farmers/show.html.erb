@@ -1,0 +1,41 @@
+<h1 class="floatLeft"><%= @farmer.farm %></h1>
+
+<% if (@farmer.has_wepay_account? && !@is_admin) %>
+		<%= link_to "Buy #{@farmer.produce} Now!", "/farmers/buy/#{@farmer.id}", :class => 'btn btn-danger btn-large', :id => 'buy-now-button' %>
+<% end %>
+
+<% if (@is_admin && !@farmer.has_valid_wepay_access_token?) %>
+	<p>
+		<b>Please create an account to manage your money: </b>
+		<a class="btn btn-primary" href="<%= @farmer.wepay_authorization_url %>">Click here to create your account</a>		
+	</p>
+<% end %>
+
+<p>
+  <b>Name:</b>
+  <%= @farmer.name %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @farmer.email %>
+</p>
+
+<p>
+  <b>Farm:</b>
+  <%= @farmer.farm %>
+</p>
+
+<p>
+  <b>Produce:</b>
+  <%= @farmer.produce %>
+</p>
+
+<p>
+  <b>Produce price:</b>
+  <%= number_to_currency(@farmer.produce_price, :unit => "$") %>
+</p>
+
+<% if (@is_admin) %>
+	<%= link_to 'Edit', edit_farmer_path(@farmer) %>
+<% end %>
