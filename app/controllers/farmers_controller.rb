@@ -38,6 +38,16 @@ class FarmersController < ApplicationController
     end
   end
   
+  # PUT /farmers/1/update
+  def update
+    @farmer = Farmer.find(params[:id])
+    if @farmer.update_attributes(params[:farmer])
+      redirect_to @farmer, notice: 'Farmer was successfully updated.'
+    else
+      render :action => 'edit'
+    end
+  end
+  
   # GET /farmers/oauth/1
   def oauth
 		if !params[:code]
