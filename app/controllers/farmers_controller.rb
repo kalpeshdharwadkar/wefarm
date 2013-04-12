@@ -53,11 +53,18 @@ class FarmersController < ApplicationController
 		if !params[:code]
 			return redirect_to('/')
 		end 
+		
 		@farmer = Farmer.find(params[:farmer_id])
-		if @farmer.request_wepay_access_token(params[:code])
-		  redirect_to @farmer, notice: 'We have successfully connected you to WePay!'
+		begin
+		  @farmer.request_wepay_access_token(params[:code])
+		rescue Exception => e
+		  error = e.message
+		end
+		
+		if error
+		  redirect_to @farmer, alert: error
 		else
-		  redirect_to @farmer, alert: 'There was an error connecting to WePay'
+		  redirect_to @farmer, notice: 'We have successfully connected you to WePay!'
 		end
 	end
 	

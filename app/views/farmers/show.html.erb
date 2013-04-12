@@ -4,7 +4,7 @@
 		<%= link_to "Buy #{@farmer.produce} Now!", "/farmers/buy/#{@farmer.id}", :class => 'btn btn-danger btn-large', :id => 'buy-now-button' %>
 <% end %>
 
-<% if (@is_admin && !@farmer.has_valid_wepay_access_token?) %>
+<% if (@is_admin && (!@farmer.has_valid_wepay_access_token? || !@farmer.has_wepay_account?)) %>
 	<p>
 		<b>Please create an account to manage your money: </b>
 		<a class="btn btn-primary" href="<%= @farmer.wepay_authorization_url %>">Click here to create your account</a>		
