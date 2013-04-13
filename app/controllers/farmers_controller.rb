@@ -53,10 +53,10 @@ class FarmersController < ApplicationController
 		if !params[:code]
 			return redirect_to('/')
 		end 
-		
+		redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host_with_port)
 		@farmer = Farmer.find(params[:farmer_id])
 		begin
-		  @farmer.request_wepay_access_token(params[:code])
+		  @farmer.request_wepay_access_token(params[:code], redirect_uri)
 		rescue Exception => e
 		  error = e.message
 		end
@@ -70,9 +70,10 @@ class FarmersController < ApplicationController
 	
 	# GET /farmers/buy/1
   def buy
-    @farmer = Farmer.find(params[:farmer_id])    
+    redirect_uri = url_for(:controller => 'farmers', :action => 'payment_success', :farmer_id => params[:farmer_id], :host => request.host_with_port)
+    @farmer = Farmer.find(params[:farmer_id])
     begin
-		  @checkout = @farmer.create_checkout
+		  @checkout = @farmer.create_checkout(redirect_uri)
 		rescue Exception => e
 		  redirect_to @farmer, alert: e.message
 		end

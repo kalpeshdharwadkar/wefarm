@@ -45,6 +45,4 @@ Wefarm::Application.configure do
   CLIENT_SECRET = "180c800c62"
   USE_STAGE = true
   WEPAY = WePay.new(CLIENT_ID, CLIENT_SECRET, USE_STAGE)
-  
-  $host = $host || 'http://staging.wefarm.com'
 end

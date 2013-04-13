@@ -25,18 +25,17 @@ class Farmer < ActiveRecord::Base
 		end
 	end
 	
-	# the URI where WePay will redirect control
-  OAUTH_REDIRECT_URI = "#{$host}/farmers/oauth/"
-	
 	# get the authorization url for this farmer. This url will let the farmer register or login to WePay to approve our app.
 	# returns a url
-	def wepay_authorization_url
-	  Wefarm::Application::WEPAY.oauth2_authorize_url(OAUTH_REDIRECT_URI + self.id.to_s, self.email, self.name)
+	def wepay_authorization_url(redirect_uri)
+	  #Wefarm::Application::WEPAY.oauth2_authorize_url(OAUTH_REDIRECT_URI + self.id.to_s, self.email, self.name)
+	  Wefarm::Application::WEPAY.oauth2_authorize_url(redirect_uri, self.email, self.name)
 	end
 	
 	# takes a code returned by wepay oauth2 authorization and makes an api call to generate oauth2 token for this farmer.
-	def request_wepay_access_token(code)
-		response = Wefarm::Application::WEPAY.oauth2_token(code, OAUTH_REDIRECT_URI + self.id.to_s)
+	def request_wepay_access_token(code, redirect_uri)
+		#response = Wefarm::Application::WEPAY.oauth2_token(code, OAUTH_REDIRECT_URI + self.id.to_s)
+		response = Wefarm::Application::WEPAY.oauth2_token(code, redirect_uri)
 		if response['error']
 			raise "Error - "+ response['error_description']
 		elsif !response['access_token']
@@ -85,10 +84,10 @@ class Farmer < ActiveRecord::Base
 	end
 	
 	# creates a checkout object using WePay API for this farmer
-	def create_checkout	  
+	def create_checkout(redirect_uri)
 	  # calculate app_fee as 10% of produce price
 	  app_fee = self.produce_price * 0.1
-	  
+
 	  params = { 
 			:account_id => self.wepay_account_id, 
 			:short_description => "Produce sold by #{self.farm}",
@@ -97,10 +96,10 @@ class Farmer < ActiveRecord::Base
 			:app_fee => app_fee,
 			:fee_payer => :payee,			
 			:mode => :iframe,
-			:redirect_uri => "#{$host}/farmers/payment_success/#{self.id}"
+			:redirect_uri => redirect_uri
 		}
 		response = Wefarm::Application::WEPAY.call('/checkout/create', self.wepay_access_token, params)
-		
+
 		if !response
 			raise "Error - no response from WePay"
 		elsif response['error']
