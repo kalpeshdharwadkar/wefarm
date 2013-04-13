@@ -38,7 +38,7 @@ class Farmer < ActiveRecord::Base
 	def request_wepay_access_token(code)
 		response = Wefarm::Application::WEPAY.oauth2_token(code, OAUTH_REDIRECT_URI + self.id.to_s)
 		if response['error']
-			raise "Error - "+ response['error']
+			raise "Error - "+ response['error_description']
 		elsif !response['access_token']
 		  raise "Error requesting access from WePay"
 		else
@@ -77,7 +77,7 @@ class Farmer < ActiveRecord::Base
 				self.wepay_account_id = response["account_id"]
 				return self.save
 			else
-			  raise "Error - " + response["error"]
+			  raise "Error - " + response["error_description"]
 			end
 	  
 		end		
@@ -100,6 +100,14 @@ class Farmer < ActiveRecord::Base
 			:redirect_uri => "#{$host}/farmers/payment_success/#{self.id}"
 		}
 		response = Wefarm::Application::WEPAY.call('/checkout/create', self.wepay_access_token, params)
+		
+		if !response
+			raise "Error - no response from WePay"
+		elsif response['error']
+		  raise "Error - " + response["error_description"]
+		end
+		
+		return response
 	end
 	
 end

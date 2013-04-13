@@ -70,11 +70,12 @@ class FarmersController < ApplicationController
 	
 	# GET /farmers/buy/1
   def buy
-    @farmer = Farmer.find(params[:farmer_id])
-    @checkout = @farmer.create_checkout
-    if(@checkout && @checkout["error"])
-      redirect_to @farmer, alert: "Error - #{@checkout['error_description']}"
-    end
+    @farmer = Farmer.find(params[:farmer_id])    
+    begin
+		  @checkout = @farmer.create_checkout
+		rescue Exception => e
+		  redirect_to @farmer, alert: e.message
+		end
   end
   
   # GET /farmers/payment_success/1
