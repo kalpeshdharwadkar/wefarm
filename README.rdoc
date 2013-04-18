@@ -1,7 +1,7 @@
-== Welcome to WeFarm
+== Welcome to WeFarm - A WePay Marketplace Demo
 
-WeFarm is an online farmers market. It is a demo marketplace built using WePay API to demonstrate the ease of using WePay to build a complete marketplace that processes payments between buyers and merchants. You can use this demo to build different applications that support various use cases like consumer-to-consumer platforms for products or services, fund-raising websites, subscription services, etc.
+WeFarm is a demo marketplace built using WePay API.  It functions as an online farmers market that processes payments between buyers and merchants. We've built WeFarm to demonstrate the ease of using the WePay API to build a complete marketplace. From this app you can learn how to build different applications that support various online payment types such as: seller-to-consumer platforms for products or services (like Etsy or TaskRabbit), fund-raising websites, subscription services, etc.
 
 Visit https://stage.wepay.com/developer/platform/wefarm-tutorial for a complete tutorial. You can play with a live demo of this application at http://wefarm.herokuapp.com/. The demo does not process real payments. You can test using fake data.
 
-Before starting, you will need WePay client id and client secret for your app. You can get them by registering your app at WePay - https://www.wepay.com/developer/register. Change those values in config/environments/development.rb file of the project before you begin.
+Before starting to customize the WeFarm demo, you'll need a WePay client id and client secret for your app. You can get them by registering your app at WePay - https://www.wepay.com/developer/register. Change those values in config/environments/development.rb file of the project before you begin.
