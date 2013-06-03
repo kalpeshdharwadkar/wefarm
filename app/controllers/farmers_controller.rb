@@ -53,7 +53,9 @@ class FarmersController < ApplicationController
 		if !params[:code]
 			return redirect_to('/')
 		end 
-		redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host_with_port)
+		#redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host_with_port)
+		#redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => 'vm.wefarm.com')
+		redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host)
 		@farmer = Farmer.find(params[:farmer_id])
 		begin
 		  @farmer.request_wepay_access_token(params[:code], redirect_uri)
@@ -64,7 +66,7 @@ class FarmersController < ApplicationController
 		if error
 		  redirect_to @farmer, alert: error
 		else
-		  redirect_to @farmer, notice: 'We have successfully connected you to WePay!'
+		  redirect_to @farmer, notice: 'We successfully connected you to WePay!'
 		end
 	end
 	
