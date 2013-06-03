@@ -53,9 +53,7 @@ class FarmersController < ApplicationController
 		if !params[:code]
 			return redirect_to('/')
 		end 
-		#redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host_with_port)
-		#redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => 'vm.wefarm.com')
-		redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host)
+		redirect_uri = url_for(:controller => 'farmers', :action => 'oauth', :farmer_id => params[:farmer_id], :host => request.host_with_port)
 		@farmer = Farmer.find(params[:farmer_id])
 		begin
 		  @farmer.request_wepay_access_token(params[:code], redirect_uri)
