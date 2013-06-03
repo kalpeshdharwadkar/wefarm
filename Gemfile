@@ -22,8 +22,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-#gem 'mysql2', '~> 0.3.10'
-gem 'pg'
+gem 'mysql2', '~> 0.3.10'
 gem 'wepay'
 
 # To use ActiveModel has_secure_password
